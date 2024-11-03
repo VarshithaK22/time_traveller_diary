@@ -28,18 +28,14 @@
                                 {{entry.updated_at|date:"M d, Y"}}
                             </small></a>
                             <a href="/{{ entry.pk }}" class="btn btn-light" title="Open Entry"><i class="fas fa-folder-open"></i></a>
-                            <a href class="btn btn-light btn-sm"
-                                title="Edit Entry">
-                                <i class="fas fa-edit"></i>
-                            </a>
+                            <a href="/{{ entry.pk }}/update" class="btn btn-light btn-sm" title="Edit Entry"><i class="fas fa-edit"></i></a>
                             <a href="#"
                                 onclick="document.getElementById('delete-form-{{ entry.pk }}').submit();"
                                 class="btn btn-light btn-sm"
                                 title="Delete Entry">
                                 <i class="fas fa-trash-alt"></i>
                             </a>
-                            <form id="delete-form-{{ entry.pk }}" action
-                                method="POST" style="display: none;">
+                            <form id="delete-form-{{ entry.pk }}" action="{% url 'entry_delete' entry.pk %}" method="GET" style="display: none;">
                                 {% csrf_token %}
                             </form>
                         </div>

@@ -14,5 +14,7 @@ urlpatterns = [
     path('', views.EntryListView.as_view(), name='home'),
     path('new/', entry_views.EntryCreateView.as_view(), name='entry_create'),
     path('<int:pk>/', entry_views.EntryDetailView.as_view(), name='entry_detail'),
+    path('<int:pk>/update', entry_views.EntryUpdateView.as_view(), name='entry_update'),
+    path('<int:pk>/delete', entry_views.EntryDeleteView.as_view(), name='entry_delete'),
     
 ]
