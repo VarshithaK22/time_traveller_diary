@@ -4,26 +4,139 @@
 {% block content %}
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="text-center mb-0">Profile</h2>
+        <div class="col-12 col-lg-8">
+            <!-- Profile Header -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="avatar-circle mb-3">
+                            {% if user.first_name %}
+                                <span class="initials">{{ user.first_name|first }}{{ user.last_name|first }}</span>
+                            {% else %}
+                                <span class="initials">{{ user.username|first|upper }}</span>
+                            {% endif %}
+                        </div>
+                        <h2 class="h3 mb-2">{{ user.username }}</h2>
+                        <p class="text-muted mb-0">
+                            <i class="fas fa-calendar-check me-2"></i>Member since {{ user.date_joined|date:"F Y" }}
+                        </p>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <form method="post">
-                        {% csrf_token %}
-                        <h1>Welcome {{ user.username }}</h1>
-                        <p>Email: {{ user.email }}</p>
+            </div>
 
-                        {% if user.first_name or user.last_name %}
-                        <p>Name: {{ user.first_name }} {{ user.last_name }}</p>
-                        {% endif %}
+            <!-- Profile Details -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-primary bg-gradient text-white p-3">
+                    <h3 class="h5 mb-0">
+                        <i class="fas fa-user-circle me-2"></i>Profile Information
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-4">
+                        <!-- Personal Information -->
+                        <div class="col-12 col-md-6">
+                            <div class="profile-section">
+                                <h4 class="h6 text-primary mb-3">Personal Details</h4>
+                                <div class="list-group list-group-flush">
+                                    <div class="list-group-item px-0 py-3 d-flex align-items-center">
+                                        <i class="fas fa-envelope text-muted me-3"></i>
+                                        <div>
+                                            <small class="text-muted d-block">Email Address</small>
+                                            <span>{{ user.email }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="list-group-item px-0 py-3 d-flex align-items-center">
+                                        <i class="fas fa-user text-muted me-3"></i>
+                                        <div>
+                                            <small class="text-muted d-block">Full Name</small>
+                                            <span>
+                                                {% if user.first_name or user.last_name %}
+                                                    {{ user.first_name }} {{ user.last_name }}
+                                                {% else %}
+                                                    <span class="text-muted">Not provided</span>
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                        <p>Date joined: {{ user.date_joined }}</p>
-                    </form>
+                        <!-- Account Information -->
+                        <div class="col-12 col-md-6">
+                            <div class="profile-section">
+                                <h4 class="h6 text-primary mb-3">Account Details</h4>
+                                <div class="list-group list-group-flush">
+                                    <div class="list-group-item px-0 py-3 d-flex align-items-center">
+                                        <i class="fas fa-clock text-muted me-3"></i>
+                                        <div>
+                                            <small class="text-muted d-block">Member Since</small>
+                                            <span>{{ user.date_joined|date:"F j, Y" }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="list-group-item px-0 py-3 d-flex align-items-center">
+                                        <i class="fas fa-shield-alt text-muted me-3"></i>
+                                        <div>
+                                            <small class="text-muted d-block">Account Status</small>
+                                            <span class="badge bg-success">Active</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="mt-4 d-flex flex-wrap gap-2">
+                        <a href="#" class="btn btn-primary disabled">
+                            <i class="fas fa-edit me-2"></i>Edit Profile
+                        </a>
+                        <a href="#" class="btn btn-outline-primary disabled">
+                            <i class="fas fa-key me-2"></i>Change Password
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .avatar-circle {
+        width: 100px;
+        height: 100px;
+        background-color: #4361ee;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+
+    .avatar-circle .initials {
+        font-size: 2.5rem;
+        color: white;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+    .profile-section {
+        height: 100%;
+    }
+
+    .list-group-item {
+        border: none;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .list-group-item:last-child {
+        border-bottom: none;
+    }
+
+    @media (max-width: 767.98px) {
+        .profile-section {
+            margin-bottom: 1.5rem;
+        }
+    }
+</style>
 {% endblock %}

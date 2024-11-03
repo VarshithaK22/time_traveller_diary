@@ -2,26 +2,84 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container py-5">
+<div class="container-fluid py-4">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="text-center mb-0">Edit Adventure</h2>
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <!-- Header Section -->
+                <div class="card-header bg-primary text-white py-3 border-0">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h2 class="h3 mb-0 fw-bold">
+                            <i class="fas fa-edit me-2"></i>Edit Adventure
+                        </h2>
+                        <a href="{% url 'home' %}" class="btn btn-outline-light btn-sm">
+                            <i class="fas fa-times me-1"></i>Close
+                        </a>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <form method="post">
+
+                <!-- Form Section -->
+                <div class="card-body p-4">
+                    <form method="post" class="needs-validation" novalidate>
                         {% csrf_token %}
-                        {{ form|crispy }}
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">Update</button>
-                            <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+                        
+                        <!-- Form Fields -->
+                        <div class="mb-4">
+                            {{ form|crispy }}
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-end mt-4">
+                            <a href="{% url 'home' %}" class="btn btn-outline-secondary px-4">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
                         </div>
                     </form>
-                    
                 </div>
+
+                <!-- Optional Tips Section -->
+                <div class="card-footer bg-light border-0 py-3">
+                    <div class="d-flex align-items-center text-muted">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <small>All fields marked with an asterisk (*) are required.</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Responsive Back Link for Mobile -->
+            <div class="d-md-none text-center mt-4">
+                <a href="{% url 'home' %}" class="text-decoration-none">
+                    <i class="fas fa-arrow-left me-1"></i> Back to Adventures
+                </a>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Optional: Add custom styles -->
+<style>
+    .card {
+        transition: all 0.3s ease;
+    }
+    
+    @media (max-width: 768px) {
+        .card {
+            border-radius: 0;
+            box-shadow: none !important;
+        }
+        
+        .container-fluid {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+    
+    /* Optional: Enhance form field appearance */
+    .form-control:focus {
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
+</style>
 {% endblock %}
