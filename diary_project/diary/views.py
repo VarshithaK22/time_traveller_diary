@@ -1,32 +1,37 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from django.contrib import messages
+from .forms import UserRegistrationForm
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegistrationForm#, ProfileForm
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import (
+    ListView, DetailView, CreateView, UpdateView, DeleteView
+)
+from django.contrib import messages
+from .models import DiaryEntry
 
 def register(request):
     if request.method == 'POST':
-        user_form = UserRegistrationForm(request.POST)
-        # profile_form = ProfileForm(request.POST)
-        
+        user_form = UserRegistrationForm(request.POST)        
         if user_form.is_valid():
-        # and profile_form.is_valid():
-            user = user_form.save()
-            # user.profile.date_of_birth = profile_form.cleaned_data.get('date_of_birth')
-            user.profile.save()
-            
+            user = user_form.save()            
             login(request, user)
             messages.success(request, 'Registration successful!')
             return redirect('home')  # Change to your home view
     else:
-        user_form = UserRegistrationForm()
-        # profile_form = ProfileForm()
-    
+        user_form = UserRegistrationForm()    
     return render(request, 'register.html', {
         'user_form': user_form,
-        # 'profile_form': profile_form
     })
 
 @login_required
 def profile(request):
     return render(request, 'profile.html')
+
+
+class EntryListView(LoginRequiredMixin, ListView):
+    model = DiaryEntry
+    template_name = 'home.html'
+    context_object_name = 'entries'
+
+    def get_queryset(self):
+        return DiaryEntry.objects.filter(author=self.request.user)
