@@ -25,7 +25,11 @@ def register(request):
 
 @login_required
 def profile(request):
-    return render(request, 'profile.html')
+    user = request.user  
+    context = {
+        'user': user
+    }
+    return render(request, 'profile.html', context)
 
 
 class EntryListView(LoginRequiredMixin, ListView):
