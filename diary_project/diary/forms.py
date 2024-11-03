@@ -16,3 +16,10 @@ class DiaryEntryForm(forms.ModelForm):
     class Meta:
         model = DiaryEntry
         fields = ['title', 'content', 'date_of_journey', 'location']
+        widgets = {
+            'date_of_journey': forms.DateInput(attrs={
+                'type': 'date',  
+                'class': 'form-control',  
+                'placeholder': 'YYYY-MM-DD',  
+            }),
+        }
