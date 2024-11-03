@@ -27,26 +27,30 @@
                     <ul class="navbar-nav ms-auto">
                         {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link"
-                                href="{% url 'entry_create' %}"><i
-                                    class="fas fa-list"></i>All Entries</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                                href="{% url 'entry_create' %}"><i
-                                    class="fas fa-plus"></i>Entry</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link"
-                                href="{% url 'profile' %}"><i
-                                    class="bi bi-person-circle"></i>Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"
-                                onClick="document.getElementById('logoutform').submit()">
-                                <i class="fas fa-sign-out-alt"></i>Logout
+                            <a class="nav-link d-flex align-items-center" href="{% url 'home' %}" data-toggle="tooltip" data-placement="bottom" title="Browse all your diary adventures">
+                                <i class="fas fa-book-open mr-2"></i>
+                                <span>View Adventures</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="{% url 'entry_create' %}" data-toggle="tooltip" data-placement="bottom" title="Record a new adventure">
+                                <i class="fas fa-feather-alt mr-2"></i>
+                                <span>New Adventure</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}" data-toggle="tooltip" data-placement="bottom" title="Manage your profile and settings">
+                                <i class="bi bi-person-circle mr-2"></i>
+                                <span>My Profile</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="#" onclick="document.getElementById('logoutform').submit()" data-toggle="tooltip" data-placement="bottom" title="Sign out of your account">
+                                <i class="fas fa-door-open mr-2"></i>
+                                <span>Sign Out</span>
+                            </a>
+                        </li>
+                        
                         <form id="logoutform" method="POST"
                             action="{% url 'logout' %}">
                             {% csrf_token %}
