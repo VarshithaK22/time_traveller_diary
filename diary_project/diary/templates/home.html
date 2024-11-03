@@ -8,7 +8,7 @@
                 <article class="content-section">
                     <div class="d-flex justify-content-between align-items-center">
                         <h3><a href="">{{ entry.title }}</a></h3>
-                        <small class="text-muted">{{ entry.date_created|date:"F d, Y" }}</small>
+                        <small class="text-muted">{{ entry.updated_at|date:"F d, Y" }}</small>
                     </div>
                     <p class="text-truncate">{{ entry.content }}</p>
                 </article>
