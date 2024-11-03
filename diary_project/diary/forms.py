@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .models import DiaryEntry
 
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -11,3 +12,7 @@ class UserRegistrationForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
 
+class DiaryEntryForm(forms.ModelForm):
+    class Meta:
+        model = DiaryEntry
+        fields = ['title', 'content', 'date_of_journey', 'location']

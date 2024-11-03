@@ -38,4 +38,4 @@ class EntryListView(LoginRequiredMixin, ListView):
     context_object_name = 'entries'
 
     def get_queryset(self):
-        return DiaryEntry.objects.filter(author=self.request.user)
+        return DiaryEntry.objects.filter(user=self.request.user)

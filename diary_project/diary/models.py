@@ -6,12 +6,14 @@ from django.urls import reverse
 class DiaryEntry(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_modified = models.DateTimeField(auto_now=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_of_journey = models.DateField()
+    location = models.CharField(max_length=200)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-date_created']
+        ordering = ['-updated_at', 'created_at']
 
     def __str__(self):
         return self.title
