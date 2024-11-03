@@ -19,4 +19,4 @@ class DiaryEntry(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('entry-detail', kwargs={'pk': self.pk})
+        return reverse('entry_detail', kwargs={'pk': self.pk})

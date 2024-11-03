@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-primary">Adventure Details</h1>
+    <div class="container my-5">
+        <h1 class="mb-4">{{ object.title }}</h1>
+
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <th scope="row"><i class="fas fa-calendar-day"></i> Date of Journey</th>
+                    <td>{{ object.date_of_journey }}</td>
+                </tr>
+                <tr>
+                    <th scope="row"><i class="fas fa-map-marker-alt"></i> Location</th>
+                    <td>{{ object.location }}</td>
+                </tr>
+                <tr>
+                    <th scope="row"><i class="fas fa-align-left"></i> Content</th>
+                    <td>{{ object.content|linebreaks }}</td>
+                </tr>
+                <tr>
+                    <th scope="row"><i class="fas fa-clock"></i> Created At</th>
+                    <td>{{ object.created_at|date:"F j, Y, g:i a" }}</td>
+                </tr>
+                <tr>
+                    <th scope="row"><i class="fas fa-sync-alt"></i> Last Updated</th>
+                    <td>{{ object.updated_at|date:"F j, Y, g:i a" }}</td>
+                </tr>
+                <tr>
+                    <th scope="row"><i class="fas fa-user"></i> Author</th>
+                    <td>{{ object.user.username }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="mt-4">
+            <a href="{% url 'home' %}" class="btn btn-secondary">Back to All Entries</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

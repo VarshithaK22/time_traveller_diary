@@ -13,5 +13,6 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('', views.EntryListView.as_view(), name='home'),
     path('new/', entry_views.EntryCreateView.as_view(), name='entry_create'),
+    path('<int:pk>/', entry_views.EntryDetailView.as_view(), name='entry_detail'),
     
 ]
