@@ -1,74 +1,62 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-12">
-        <div class="container my-4 p-3 text-center bg-light rounded shadow-sm">
-            <h2 class="text-primary fw-bold">
-                All Adventures
-                <span class="badge bg-primary rounded-pill fs-6 ms-2">{{ entries|length }}</span>
-            </h2>
-            <p class="text-muted">Embark on a journey through time and space,
-                and keep track of all the thrilling encounters.</p>
-        </div>
-        <hr>
-        <div class="row">
-            {% for entry in entries %}
-            <div class="col-md-2 mb-2">
-                <div class="card h-100 shadow-sm">
+<div class="container my-5">
+    <!-- Main Header Section -->
+    <div class="text-center mb-4">
+        <h2 class="text-primary fw-bold">
+            All Adventures
+            <span class="badge bg-primary rounded-pill fs-6 ms-2">{{ entries|length }}</span>
+        </h2>
+        <p class="text-muted">Embark on a journey through time and space, and keep track of all the thrilling encounters.</p>
+    </div>
 
+    <hr class="my-4">
+
+    <!-- Adventures Grid -->
+    <div class="row g-4">
+        {% for entry in entries %}
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card h-100 shadow-sm border-0">
+                    <!-- Card Body -->
                     <div class="card-body d-flex flex-column">
-                        <div
-                            class="d-flex justify-content-between align-items-center mb-2">
-                            <h5 class="card-title mb-0">
-                                <a href="/{{ entry.pk }}"
-                                    class="text-dark text-decoration-none">{{entry.title}}</a>
-                            </h5>
-
-                        </div>
-                        <p class="card-text text-truncate mb-4">{{entry.content}}</p>
-
+                        <h5 class="card-title mb-2">
+                            <a href="/{{ entry.pk }}" class="text-dark text-decoration-none">{{ entry.title }}</a>
+                        </h5>
+                        <p class="card-text text-truncate mb-4">{{ entry.content }}</p>
                     </div>
-                    <div class="card-footer">
-                        <div class="d-flex justify-content-end">
-                            <a href="#" class="btn btn-light"
-                                title="Last edited on">
-                                <i
-                                    class="fas fa-calendar-alt text-muted mr-1"></i><small
-                                    class="text-muted">
-                                    {{entry.updated_at|date:"M d, Y"}}
-                                </small></a>
-                            <a href="/{{ entry.pk }}" class="btn btn-light"
-                                title="Open Entry"><i
-                                    class="fas fa-folder-open"></i></a>
-                            <a href="/{{ entry.pk }}/update"
-                                class="btn btn-light btn-sm"
-                                title="Edit Entry"><i
-                                    class="fas fa-edit"></i></a>
-                            <a href="#"
-                                onclick="document.getElementById('delete-form-{{ entry.pk }}').submit();"
-                                class="btn btn-light btn-sm"
-                                title="Delete Entry">
+                    <!-- Card Footer with Actions -->
+                    <div class="card-footer bg-light d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="fas fa-calendar-alt me-1"></i>{{ entry.date_of_journey|date:"M d, Y" }}
+                        </small>
+                        <div class="btn-group" role="group">
+                            <a href="/{{ entry.pk }}" class="btn btn-outline-primary btn-sm" title="Open Entry">
+                                <i class="fas fa-folder-open"></i>
+                            </a>
+                            <a href="/{{ entry.pk }}/update" class="btn btn-outline-secondary btn-sm" title="Edit Entry">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="#" onclick="document.getElementById('delete-form-{{ entry.pk }}').submit();" class="btn btn-outline-danger btn-sm" title="Delete Entry">
                                 <i class="fas fa-trash-alt"></i>
                             </a>
-                            <form id="delete-form-{{ entry.pk }}"
-                                action="{% url 'entry_delete' entry.pk %}"
-                                method="GET" style="display: none;">
-                                {% csrf_token %}
-                            </form>
                         </div>
+                        <form id="delete-form-{{ entry.pk }}" action="{% url 'entry_delete' entry.pk %}" method="GET" style="display: none;">
+                            {% csrf_token %}
+                        </form>
                     </div>
                 </div>
             </div>
-            {% empty %}
-            <div class="col-md-8 mb-8">
-                <div class="alert alert-warning" role="alert">
+        {% empty %}
+            <!-- No Adventures Found Message -->
+            <div class="col-12">
+                <div class="alert alert-warning text-center" role="alert">
                     No adventures found. Start by creating a new adventure!
                 </div>
-                <a href="{% url 'entry_create' %}"
-                    class="btn btn-primary btn-sm">New Adventure</a>
+                <div class="text-center">
+                    <a href="{% url 'entry_create' %}" class="btn btn-primary btn-lg">Create New Adventure</a>
+                </div>
             </div>
-            {% endfor %}
-        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock content %}
