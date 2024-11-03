@@ -36,7 +36,8 @@
             </tbody>
         </table>
         <div class="mt-4">
-            <a href="{% url 'home' %}" class="btn btn-secondary">Back to All Entries</a>
+            <a href="{% url 'home' %}" class="btn btn-secondary"><i class="fas fa-arrow-left" aria-hidden="true"></i>Back to All Entries</a>
+            <a href="{% url 'entry_delete' object.pk %}" class="btn btn-secondary"><i class="fas fa-trash-alt"></i>Delete</a>
         </div>
     </div>
 </div>

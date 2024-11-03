@@ -4,7 +4,7 @@
     <div class="col-md-8">
         <h2>My Adventures</h2>
 
-        <div class="row">
+        <div class="row justify-content-center">
             {% for entry in entries %}
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm">
@@ -43,9 +43,12 @@
                 </div>
             </div>
             {% empty %}
-            <p class="text-center w-100">No entries found. Start by creating a
-                new adventure! <a href="{% url 'entry_create' %}">Add
-                    Adventure</a>.</p>
+            <div class="col-md-8 mb-8">
+            <div class="alert alert-warning" role="alert">
+                No adventures found. Start by creating a new adventure!
+              </div>
+             <a href="{% url 'entry_create' %}" class="btn btn-primary btn-sm">New Adventure</a>
+            </div>
             {% endfor %}
         </div>
     </div>
