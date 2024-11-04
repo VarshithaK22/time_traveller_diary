@@ -13,7 +13,7 @@ class EntryCreateView(LoginRequiredMixin, View):
         return render(request, 'entry/form.html', {'form': form})
 
     def post(self, request):
-        form = DiaryEntryForm(request.POST)
+        form = DiaryEntryForm(request.POST, request.FILES)
         if form.is_valid():
             entry = form.save(commit=False)
             entry.user = request.user

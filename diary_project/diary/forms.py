@@ -15,7 +15,7 @@ class UserRegistrationForm(UserCreationForm):
 class DiaryEntryForm(forms.ModelForm):
     class Meta:
         model = DiaryEntry
-        fields = ['title', 'content', 'date_of_journey', 'location', "mood", "time_period", "destination_date"]
+        fields = ['title', 'content', 'date_of_journey', 'location', "mood", "time_period", "destination_date", "image"]
         widgets = {
             'date_of_journey': forms.DateInput(attrs={
                 'type': 'date',  

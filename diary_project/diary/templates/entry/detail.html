@@ -67,6 +67,34 @@
                         </div>
                     </div>
 
+                    <!-- Image Section with Standardized Size -->
+                    <div class="mb-4">
+                        <h5 class="text-primary mb-3">Memorable Moments</h5>
+                        {% if object.image %}
+                        <span> Click on the image to view the image in full screen </span>
+                        {% endif %}
+
+                        <div class="d-flex justify-content-center" style="width: 300px;">
+                            {% if object.image %}
+                                <img 
+                                    src="{{ object.image.url }}" 
+                                    alt="{{ object.title }}" 
+                                    class="img-fluid rounded shadow-sm"
+                                    style="object-fit: cover; max-width: 100%; height: auto;"
+                                    loading="lazy"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#imageModal"
+                                >
+                                
+                            {% else %}
+                                <div class="w-100 h-100 bg-light d-flex flex-column align-items-center justify-content-center rounded border border-2 border-dashed">
+                                    <i class="fas fa-image fa-3x text-secondary mb-2"></i>
+                                    <p class="text-muted mb-0">No image available for this story</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
                     <!-- Metadata Grid -->
                     <div class="row g-3">
                         <div class="col-12 col-md-6">
@@ -105,4 +133,21 @@
         </div>
     </div>
 </div>
+{% if object.image %}
+<!-- Modal for Full Image -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <img 
+                    src="{{ object.image.url }}" 
+                    alt="{{ object.title }}" 
+                    class="img-fluid w-100"
+                >
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 {% endblock %}

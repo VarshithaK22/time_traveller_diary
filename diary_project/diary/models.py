@@ -73,6 +73,8 @@ class DiaryEntry(models.Model):
         help_text="Specific year within the time period (optional)"
     )
 
+    image = models.ImageField(upload_to='adventure_images/', blank=True, null=True)
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
