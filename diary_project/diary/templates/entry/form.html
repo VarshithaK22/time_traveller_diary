@@ -38,7 +38,14 @@
                         <div class="mb-4">
                             {{ form|crispy }}
                         </div>
-
+                        <!-- Random Adventure Generator -->
+                        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center mt-4">
+                            <button type="button" id="generate-adventure" class="btn btn-outline-primary">
+                                <i class="fas fa-random me-2"></i>Suggest Random Adventure
+                            </button>
+                            
+                        </div>
+                        <div id="suggestion" class="mt-2 text-muted"></div>
                         <!-- Action Buttons -->
                         <div class="d-flex flex-column flex-sm-row gap-3 justify-content-end mt-4">
                             <a href="{% url 'home' %}" class="btn btn-outline-secondary px-4">
@@ -125,4 +132,21 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 </style>
+<script>
+    document.getElementById('generate-adventure').addEventListener('click', function() {
+        fetch('{% url "random_adventure" %}')  // Create this URL in your Django app
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('suggestion').innerHTML = `
+                <ul class="list-group">
+                    <li class="list-group-item"><i class="fas fa-lightbulb me-2"></i><strong>Suggested Time Period:</strong> ${data.time_period}</li>
+                    <li class="list-group-item"><i class="fas fa-lightbulb me-2"></i><strong>Suggested Location:</strong> ${data.location}</li>
+                </ul>            
+          `;
+            })
+            .catch(error => {
+                console.error('Error fetching random adventure:', error);
+            });
+    });
+</script>
 {% endblock %}
