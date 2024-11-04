@@ -28,3 +28,11 @@ class DiaryEntryForm(forms.ModelForm):
                 'placeholder': 'YYYY-MM-DD',  
             }),
         }
+
+class DiaryEntrySearchForm(forms.Form):
+    query = forms.CharField(label='Key word', max_length=100, required=False)
+    time_period = forms.ChoiceField(
+        label='Time Period',
+        choices=[('', 'All')] + DiaryEntry.TIME_PERIOD_CHOICES,  # Include an option for all time periods
+        required=False
+    )

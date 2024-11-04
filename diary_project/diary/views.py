@@ -8,7 +8,8 @@ from django.views.generic import (
 )
 from django.contrib import messages
 from .models import DiaryEntry
-
+from .forms import DiaryEntrySearchForm
+from django.db.models import Q
 def register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)        
@@ -38,4 +39,19 @@ class EntryListView(LoginRequiredMixin, ListView):
     context_object_name = 'entries'
 
     def get_queryset(self):
-        return DiaryEntry.objects.filter(user=self.request.user)
+        queryset = super().get_queryset()
+        query = self.request.GET.get('query')
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query) 
+            )
+        time_period = self.request.GET.get('time_period')
+        if time_period:
+            queryset = queryset.filter(time_period=time_period)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_form'] = DiaryEntrySearchForm(self.request.GET)
+        return context
