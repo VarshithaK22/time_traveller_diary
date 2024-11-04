@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% load emoji_filters %}
 <div class="container my-5">
     <!-- Main Header Section -->
     <div class="text-center mb-4">
@@ -21,6 +22,9 @@
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title mb-2">
                             <a href="/{{ entry.pk }}" class="text-dark text-decoration-none">{{ entry.title }}</a>
+                            <span class="badge" title="{{ entry.get_mood_display }}">
+                                {{ entry.get_mood_display|get_emoji }}
+                            </span>
                         </h5>
                         <p class="card-text text-truncate mb-4">{{ entry.content }}</p>
                     </div>
