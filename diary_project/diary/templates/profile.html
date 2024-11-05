@@ -3,97 +3,228 @@
 
 {% block content %}
 <div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-8">
+    <div class="row">
+        <!-- Left Column - Profile Info -->
+        <div class="col-12 col-lg-4">
             <!-- Profile Header -->
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body p-4">
-                    <div class="text-center mb-4">
-                        <div class="avatar-circle mb-3">
-                            {% if user.first_name %}
-                                <span class="initials">{{ user.first_name|first }}{{ user.last_name|first }}</span>
-                            {% else %}
-                                <span class="initials">{{ user.username|first|upper }}</span>
-                            {% endif %}
+                    <div class="text-center">
+                        <div class="position-relative mb-4">
+                            <div class="avatar-circle">
+                                {% if user.first_name %}
+                                    <span class="initials">{{ user.first_name|first }}{{ user.last_name|first }}</span>
+                                {% else %}
+                                    <span class="initials">{{ user.username|first|upper }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="online-status">
+                                <span class="badge bg-success">Online</span>
+                            </div>
                         </div>
                         <h2 class="h3 mb-2">{{ user.username }}</h2>
-                        <p class="text-muted mb-0">
+                        <p class="text-muted mb-3">
                             <i class="fas fa-calendar-check me-2"></i>Member since {{ user.date_joined|date:"F Y" }}
                         </p>
+                        <div class="achievement-summary">
+                            <div class="progress mb-2" style="height: 10px;">
+                                <div class="progress-bar bg-primary" role="progressbar" 
+                                     style="width: {{ achievement_progress }}%;" 
+                                     aria-valuenow="{{ achievement_progress }}" 
+                                     aria-valuemin="0" 
+                                     aria-valuemax="100"></div>
+                            </div>
+                            <small class="text-muted">
+                                {{ earned_achievements }} of {{ total_achievements }} achievements unlocked
+                            </small>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- User Details -->
+                        <div class="user-details text-start">
+                            <div class="detail-item mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="ms-3">
+                                        <small class="text-muted text-uppercase">Email</small>
+                                        <div class="text-dark">{{ user.email }}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-item mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="ms-3">
+                                        <small class="text-muted text-uppercase">Full Name</small>
+                                        <div class="text-dark">
+                                            {% if user.first_name or user.last_name %}
+                                                {{ user.first_name }} {{ user.last_name }}
+                                            {% else %}
+                                                <span class="text-muted fst-italic">Not provided</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-item mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="ms-3">
+                                        <small class="text-muted text-uppercase">Last Login</small>
+                                        <div class="text-dark">{{ user.last_login|date:"F j, Y, g:i a" }}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-item mb-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <div class="ms-3">
+                                        <small class="text-muted text-uppercase">Account Status</small>
+                                        <div>
+                                            <span class="badge bg-success rounded-pill px-3">Active</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-edit me-2"></i>Edit Profile
+                                </button>
+                                <button class="btn btn-outline-primary" type="button">
+                                    <i class="fas fa-key me-2"></i>Change Password
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-primary bg-gradient text-white p-3">
+                    <h3 class="h5 mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>Time Travel Stats
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <div class="stats-grid">
+                        <div class="stat-item text-center p-3">
+                            <h4 class="h2 mb-1">{{ diary_stats.total_entries }}</h4>
+                            <p class="text-muted mb-0">Total Entries</p>
+                        </div>
+                        <div class="stat-item text-center p-3">
+                            <h4 class="h2 mb-1">{{ diary_stats.unique_time_periods }}</h4>
+                            <p class="text-muted mb-0">Time Periods</p>
+                        </div>
+                        <div class="stat-item text-center p-3">
+                            <h4 class="h2 mb-1">{{ diary_stats.current_streak }}</h4>
+                            <p class="text-muted mb-0">Current Streak</p>
+                        </div>
+                        <div class="stat-item text-center p-3">
+                            <h4 class="h2 mb-1">{{ diary_stats.longest_streak }}</h4>
+                            <p class="text-muted mb-0">Best Streak</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Profile Details -->
-            <div class="card border-0 shadow-sm">
+            <!-- Most Visited Periods -->
+            <div class="card border-0 shadow-sm mb-4">
                 <div class="card-header bg-primary bg-gradient text-white p-3">
                     <h3 class="h5 mb-0">
-                        <i class="fas fa-user-circle me-2"></i>Profile Information
+                        <i class="fas fa-clock me-2"></i>Favorite Time Periods
                     </h3>
                 </div>
-                <div class="card-body p-4">
-                    <div class="row g-4">
-                        <!-- Personal Information -->
-                        <div class="col-12 col-md-6">
-                            <div class="profile-section">
-                                <h4 class="h6 text-primary mb-3">Personal Details</h4>
-                                <div class="list-group list-group-flush">
-                                    <div class="list-group-item px-0 py-3 d-flex align-items-center">
-                                        <i class="fas fa-envelope text-muted me-3"></i>
-                                        <div>
-                                            <small class="text-muted d-block">Email Address</small>
-                                            <span>{{ user.email }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="list-group-item px-0 py-3 d-flex align-items-center">
-                                        <i class="fas fa-user text-muted me-3"></i>
-                                        <div>
-                                            <small class="text-muted d-block">Full Name</small>
-                                            <span>
-                                                {% if user.first_name or user.last_name %}
-                                                    {{ user.first_name }} {{ user.last_name }}
-                                                {% else %}
-                                                    <span class="text-muted">Not provided</span>
-                                                {% endif %}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        {% for period in most_visited_periods %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>{{ period.display_name }}</span>
+                            <span class="badge bg-primary rounded-pill">{{ period.visit_count }}</span>
                         </div>
-
-                        <!-- Account Information -->
-                        <div class="col-12 col-md-6">
-                            <div class="profile-section">
-                                <h4 class="h6 text-primary mb-3">Account Details</h4>
-                                <div class="list-group list-group-flush">
-                                    <div class="list-group-item px-0 py-3 d-flex align-items-center">
-                                        <i class="fas fa-clock text-muted me-3"></i>
-                                        <div>
-                                            <small class="text-muted d-block">Member Since</small>
-                                            <span>{{ user.date_joined|date:"F j, Y" }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="list-group-item px-0 py-3 d-flex align-items-center">
-                                        <i class="fas fa-shield-alt text-muted me-3"></i>
-                                        <div>
-                                            <small class="text-muted d-block">Account Status</small>
-                                            <span class="badge bg-success">Active</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
+                </div>
+            </div>
+        </div>
 
-                    <!-- Action Buttons -->
-                    <div class="mt-4 d-flex flex-wrap gap-2">
-                        <a href="#" class="btn btn-primary disabled">
-                            <i class="fas fa-edit me-2"></i>Edit Profile
-                        </a>
-                        <a href="#" class="btn btn-outline-primary disabled">
-                            <i class="fas fa-key me-2"></i>Change Password
-                        </a>
+        <!-- Right Column - Achievements -->
+        <div class="col-12 col-lg-8">
+            <!-- Achievements -->
+            {% for category, achievements in achievements_by_category.items %}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-primary bg-gradient text-white p-3">
+                    <h3 class="h5 mb-0">
+                        <i class="fas fa-trophy me-2"></i>{{ category }}
+                    </h3>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        {% for achievement_info in achievements %}
+                        <div class="list-group-item p-3 {% if achievement_info.is_earned %}achievement-earned{% endif %}">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <div class="achievement-icon {% if achievement_info.is_earned %}earned{% endif %}">
+                                        <i class="fas fa-medal"></i>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <h6 class="mb-1">{{ achievement_info.achievement.name }}</h6>
+                                    <p class="mb-2 text-muted small">{{ achievement_info.achievement.description }}</p>
+                                    {% if not achievement_info.is_earned %}
+                                    <div class="progress" style="height: 5px;">
+                                        <div class="progress-bar bg-primary" role="progressbar" 
+                                             style="width: {{ achievement_info.progress_percent }}%;" 
+                                             aria-valuenow="{{ achievement_info.progress_percent }}" 
+                                             aria-valuemin="0" 
+                                             aria-valuemax="100"></div>
+                                    </div>
+                                    <small class="text-muted">{{ achievement_info.progress_percent }}% completed</small>
+                                    {% else %}
+                                    <small class="text-success">
+                                        <i class="fas fa-check-circle me-1"></i>Earned {{ achievement_info.earned_at|date:"M d, Y" }}
+                                    </small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <!-- Recent Entries -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-primary bg-gradient text-white p-3">
+                    <h3 class="h5 mb-0">
+                        <i class="fas fa-book me-2"></i>Recent Adventures
+                    </h3>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        {% for entry in recent_entries %}
+                        <div class="list-group-item p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-1">{{ entry.title }}</h6>
+                                <small class="text-muted">{{ entry.date_of_journey|date:"M d, Y" }}</small>
+                            </div>
+                            <p class="mb-1 text-muted small">{{ entry.location }}</p>
+                            <span class="badge bg-light text-dark">{{ entry.get_time_period_display }}</span>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -120,22 +251,40 @@
         text-transform: uppercase;
     }
 
-    .profile-section {
-        height: 100%;
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
     }
 
-    .list-group-item {
-        border: none;
-        border-bottom: 1px solid rgba(0,0,0,0.1);
+    .stat-item {
+        background-color: #f8f9fa;
+        border-radius: 0.5rem;
     }
 
-    .list-group-item:last-child {
-        border-bottom: none;
+    .achievement-icon {
+        width: 40px;
+        height: 40px;
+        background-color: #e9ecef;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
     }
 
-    @media (max-width: 767.98px) {
-        .profile-section {
-            margin-bottom: 1.5rem;
+    .achievement-icon.earned {
+        background-color: #4361ee;
+        color: white;
+    }
+
+    .achievement-earned {
+        background-color: #f8f9fa;
+    }
+
+    @media (max-width: 991.98px) {
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
         }
     }
 </style>
