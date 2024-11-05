@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load social_share %}
 
 {% block content %}
 <div class="container py-5">
@@ -35,7 +36,6 @@
                                 </div>
                             </div>
                             
-                            
                             <div class="d-flex align-items-center">
                                 <div class="bg-light p-3 rounded-circle me-3">
                                     <i class="fas fa-history text-primary"></i>
@@ -45,7 +45,6 @@
                                     <h5 class="mb-0">{{ object.get_time_period_display }}</h5>
                                 </div>
                             </div>
-
 
                             <!-- Mood Info (Right) -->
                             <div class="d-flex align-items-center">
@@ -59,6 +58,7 @@
                             </div>
                         </div>
                     </div>                  
+
                     <!-- Content Section -->
                     <div class="mb-4">
                         <h5 class="text-primary mb-3">Adventure Story</h5>
@@ -85,7 +85,6 @@
                                     data-bs-toggle="modal" 
                                     data-bs-target="#imageModal"
                                 >
-                                
                             {% else %}
                                 <div class="w-100 h-100 bg-light d-flex flex-column align-items-center justify-content-center rounded border border-2 border-dashed">
                                     <i class="fas fa-image fa-3x text-secondary mb-2"></i>
@@ -118,13 +117,24 @@
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
+                <!-- Action Buttons and Share Buttons -->
                 <div class="card-footer bg-light p-4">
-                    <div class="d-flex flex-wrap gap-2">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <!-- Left side - Back button -->
                         <a href="{% url 'home' %}" class="btn btn-outline-secondary">
                             <i class="fas fa-arrow-left me-2"></i>Back to All Entries
                         </a>
-                        <a href="{% url 'entry_delete' object.pk %}" class="btn btn-danger ms-auto">
+                        
+                        <!-- Center - Social Share Buttons -->
+                        {% with "Check out this adventure story: "|add:object.title|add:" - "|add:object.content|truncatechars:200 as share_text %}
+                            {% post_to_twitter share_text object "<i class=\"fa-brands fa-x-twitter me-2\"></i>Share" "btn btn-outline-dark"%}
+                            {% post_to_reddit share_text object "<i class=\"fab fa-reddit me-2\"></i>Share" "btn btn-outline-danger" %}
+                            {% post_to_telegram share_text object "<i class=\"fab fa-telegram me-2\"></i>Share" "btn btn-outline-info" %}
+                        {% endwith %}
+                        
+
+                        <!-- Right side - Delete button -->
+                        <a href="{% url 'entry_delete' object.pk %}" class="btn btn-danger">
                             <i class="fas fa-trash-alt me-2"></i>Delete Entry
                         </a>
                     </div>
@@ -133,6 +143,7 @@
         </div>
     </div>
 </div>
+
 {% if object.image %}
 <!-- Modal for Full Image -->
 <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
