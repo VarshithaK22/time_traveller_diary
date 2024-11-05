@@ -30,7 +30,16 @@
                             </div>
                         </div>
                     </div>
-
+                    <!-- Random Adventure Generator -->
+                        
+                    
+                    <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center mt-4">
+                        <button type="button" id="generate-adventure" class="btn btn-outline-primary">
+                            <i class="fas fa-random me-2"></i>Suggest Random Adventure
+                        </button>    
+                    </div>
+                    <div id="suggestion" class="mt-2 text-muted"></div>
+                    <hr>
                     <form method="post" class="needs-validation" novalidate enctype="multipart/form-data">
                         {% csrf_token %}
                         
@@ -38,14 +47,7 @@
                         <div class="mb-4">
                             {{ form|crispy }}
                         </div>
-                        <!-- Random Adventure Generator -->
-                        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center mt-4">
-                            <button type="button" id="generate-adventure" class="btn btn-outline-primary">
-                                <i class="fas fa-random me-2"></i>Suggest Random Adventure
-                            </button>
-                            
-                        </div>
-                        <div id="suggestion" class="mt-2 text-muted"></div>
+                        
                         <!-- Action Buttons -->
                         <div class="d-flex flex-column flex-sm-row gap-3 justify-content-end mt-4">
                             <a href="{% url 'home' %}" class="btn btn-outline-secondary px-4">
