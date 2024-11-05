@@ -7,39 +7,39 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('diary', '0001_initial'),
+        ("diary", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='diaryentry',
-            options={'ordering': ['-updated_at', 'created_at']},
+            name="diaryentry",
+            options={"ordering": ["-updated_at", "created_at"]},
         ),
         migrations.RenameField(
-            model_name='diaryentry',
-            old_name='date_created',
-            new_name='created_at',
+            model_name="diaryentry",
+            old_name="date_created",
+            new_name="created_at",
         ),
         migrations.RenameField(
-            model_name='diaryentry',
-            old_name='date_modified',
-            new_name='updated_at',
+            model_name="diaryentry",
+            old_name="date_modified",
+            new_name="updated_at",
         ),
         migrations.RenameField(
-            model_name='diaryentry',
-            old_name='author',
-            new_name='user',
+            model_name="diaryentry",
+            old_name="author",
+            new_name="user",
         ),
         migrations.AddField(
-            model_name='diaryentry',
-            name='date_of_journey',
+            model_name="diaryentry",
+            name="date_of_journey",
             field=models.DateField(default=django.utils.timezone.now),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='diaryentry',
-            name='location',
-            field=models.CharField(default='test', max_length=200),
+            model_name="diaryentry",
+            name="location",
+            field=models.CharField(default="test", max_length=200),
             preserve_default=False,
         ),
     ]

@@ -5,10 +5,11 @@ import random
 
 
 # Set up Django environment
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'diary_project.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "diary_project.settings")
 django.setup()
 from diary.models import DiaryEntry
 from django.contrib.auth.models import User
+
 # Initialize Faker
 fake = Faker()
 
@@ -17,6 +18,8 @@ users = list(User.objects.all())
 DiaryEntry.objects.all().delete()
 if not users:
     raise Exception("No users found in the database. Add some users first.")
+
+
 def generate_time_travel_context():
     eras = [
         "Ancient Egypt, during the reign of Pharaoh Khufu",
@@ -28,7 +31,7 @@ def generate_time_travel_context():
         "A parallel dimension where time flows backward",
         "Medieval Japan, at the height of samurai culture",
         "An alien planet with surreal, crystalline landscapes",
-        "The Roaring Twenties, in a lively speakeasy"
+        "The Roaring Twenties, in a lively speakeasy",
     ]
     discoveries = [
         "an ancient artifact that holds a powerful secret",
@@ -40,7 +43,7 @@ def generate_time_travel_context():
         "an enchanted forest that defies the laws of physics",
         "a historical figure who recognizes the time traveler",
         "a scientific experiment gone wrong, altering reality",
-        "a floating city that exists outside of time itself"
+        "a floating city that exists outside of time itself",
     ]
     encounters = [
         "a wise old oracle who knows the future",
@@ -52,14 +55,15 @@ def generate_time_travel_context():
         "a knight who believes the time traveler is a wizard",
         "a secret society that guards the timeline",
         "a lost explorer from another era",
-        "a ghostly apparition seeking closure"
+        "a ghostly apparition seeking closure",
     ]
 
     return {
         "era": random.choice(eras),
         "discovery": random.choice(discoveries),
-        "encounter": random.choice(encounters)
+        "encounter": random.choice(encounters),
     }
+
 
 # Create 500 sample diary entries with themed data
 for _ in range(500):
@@ -70,8 +74,8 @@ for _ in range(500):
         f"My encounter with {context['encounter']} left a lasting impression. "
         f"The experience was both exhilarating and full of peril, as the past and future collided."
     )
-    date_of_journey = fake.date_between(start_date='-500y', end_date='+500y')
-    location = context['era']
+    date_of_journey = fake.date_between(start_date="-500y", end_date="+500y")
+    location = context["era"]
     user = random.choice(users)
 
     DiaryEntry.objects.create(
@@ -79,7 +83,7 @@ for _ in range(500):
         content=content,
         date_of_journey=date_of_journey,
         location=location,
-        user=user
+        user=user,
     )
 
 print("500 themed Time Traveler's Diary entries have been created successfully.")

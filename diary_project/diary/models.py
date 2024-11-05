@@ -6,6 +6,8 @@ from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.conf import settings
+
+
 class DiaryEntry(models.Model):
     MOOD_CHOICES = [
         ("happy", "Happy 😊"),
@@ -67,16 +69,15 @@ class DiaryEntry(models.Model):
     time_period = models.CharField(
         max_length=50,
         choices=TIME_PERIOD_CHOICES,
-        default='modern_age',
-        help_text="The historical or future time period of this entry"
-    )
-    
-    destination_date = models.DateField(
-        null=True,
-        help_text="Specific year within the time period (optional)"
+        default="modern_age",
+        help_text="The historical or future time period of this entry",
     )
 
-    image = models.ImageField(upload_to='adventure_images/', blank=True, null=True)
+    destination_date = models.DateField(
+        null=True, help_text="Specific year within the time period (optional)"
+    )
+
+    image = models.ImageField(upload_to="adventure_images/", blank=True, null=True)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -91,110 +92,127 @@ class DiaryEntry(models.Model):
     def get_absolute_url(self):
         return reverse("entry_detail", kwargs={"pk": self.pk})
 
+
 User = get_user_model()
+
 
 class Achievement(models.Model):
     """Define the various achievements that users can earn"""
+
     CATEGORY_CHOICES = [
-        ('entries', 'Diary Entries'),
-        ('time_periods', 'Time Periods'),
-        ('streaks', 'Time Travel Streaks'),
-        ('special', 'Special Achievements'),
+        ("entries", "Diary Entries"),
+        ("time_periods", "Time Periods"),
+        ("streaks", "Time Travel Streaks"),
+        ("special", "Special Achievements"),
     ]
-    
+
     name = models.CharField(max_length=100)
     description = models.TextField()
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     icon = models.ImageField(upload_to=settings.ACHIEVEMENT_ROOT, null=True, blank=True)
-    
+
     # Requirements for earning
     required_entries = models.IntegerField(default=0)
     required_time_periods = models.IntegerField(default=0)
     required_streak = models.IntegerField(default=0)
-    
+
     class Meta:
-        ordering = ['category', 'required_entries', 'required_time_periods']
+        ordering = ["category", "required_entries", "required_time_periods"]
 
     def __str__(self):
         return self.name
 
+
 class UserAchievement(models.Model):
     """Track achievements earned by users"""
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     achievement = models.ForeignKey(Achievement, on_delete=models.CASCADE)
     earned_at = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
-        unique_together = ['user', 'achievement']
+        unique_together = ["user", "achievement"]
+
 
 class UserProgress(models.Model):
     """Track user progress towards achievements"""
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     total_entries = models.IntegerField(default=0)
     unique_time_periods = models.IntegerField(default=0)
     current_streak = models.IntegerField(default=0)
     longest_streak = models.IntegerField(default=0)
     last_entry_date = models.DateField(null=True, blank=True)
-    
+
     def __str__(self):
         return f"Progress for {self.user.username}"
 
+
 # Signal handlers for achievement tracking
-@receiver(post_save, sender='diary.DiaryEntry')
+@receiver(post_save, sender="diary.DiaryEntry")
 def update_user_progress(sender, instance, created, **kwargs):
     """Update user progress when a new diary entry is created"""
     if not created:
         return
-        
+
     progress, _ = UserProgress.objects.get_or_create(user=instance.user)
-    
+
     # Update total entries
     progress.total_entries += 1
-    
+
     # Update unique time periods
-    unique_periods = sender.objects.filter(user=instance.user).values('time_period').distinct().count()
+    unique_periods = (
+        sender.objects.filter(user=instance.user)
+        .values("time_period")
+        .distinct()
+        .count()
+    )
     progress.unique_time_periods = unique_periods
-    
+
     # Update streak
     today = timezone.now().date()
     if progress.last_entry_date:
         days_diff = (today - progress.last_entry_date).days
         if days_diff == 1:  # Consecutive day
             progress.current_streak += 1
-            progress.longest_streak = max(progress.current_streak, progress.longest_streak)
+            progress.longest_streak = max(
+                progress.current_streak, progress.longest_streak
+            )
         elif days_diff > 1:  # Streak broken
             progress.current_streak = 1
     else:
         progress.current_streak = 1
-    
+
     progress.last_entry_date = today
     progress.save()
-    
+
     check_achievements(instance.user)
+
 
 def check_achievements(user):
     """Check and award any newly earned achievements"""
     progress = UserProgress.objects.get(user=user)
-    earned_achievements = UserAchievement.objects.filter(user=user).values_list('achievement_id', flat=True)
-    
+    earned_achievements = UserAchievement.objects.filter(user=user).values_list(
+        "achievement_id", flat=True
+    )
+
     # Get all achievements that haven't been earned yet
     potential_achievements = Achievement.objects.exclude(id__in=earned_achievements)
-    
+
     for achievement in potential_achievements:
         earned = False
-        
+
         # Check entry count achievements
         if achievement.required_entries > 0:
             earned = progress.total_entries >= achievement.required_entries
-            
+
         # Check time period achievements
         if achievement.required_time_periods > 0:
             earned = progress.unique_time_periods >= achievement.required_time_periods
-            
+
         # Check streak achievements
         if achievement.required_streak > 0:
             earned = progress.longest_streak >= achievement.required_streak
-            
+
         if earned:
             UserAchievement.objects.create(user=user, achievement=achievement)
-

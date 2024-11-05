@@ -6,17 +6,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('diary', '0004_diaryentry_time_period_diaryentry_year_in_period'),
+        ("diary", "0004_diaryentry_time_period_diaryentry_year_in_period"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='diaryentry',
-            name='year_in_period',
+            model_name="diaryentry",
+            name="year_in_period",
         ),
         migrations.AddField(
-            model_name='diaryentry',
-            name='destination_date',
-            field=models.DateField(help_text='Specific year within the time period (optional)', null=True),
+            model_name="diaryentry",
+            name="destination_date",
+            field=models.DateField(
+                help_text="Specific year within the time period (optional)", null=True
+            ),
         ),
     ]

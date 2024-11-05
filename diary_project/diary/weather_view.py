@@ -4,6 +4,7 @@ import random
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 
+
 class RandomeWeatherView(LoginRequiredMixin, View):
 
     TIME_PERIOD_CHOICES = [
@@ -54,123 +55,162 @@ class RandomeWeatherView(LoginRequiredMixin, View):
             "temperature": 0,
             "humidity": 0,
             "pressure": 0,
-            "weather_description": random.choice([
-                        "Scorching desert heat",
-                        "Nile River floods",
-                        "Khamaseen wind storms",
-                        "Clear skies"
-                    ]),
+            "weather_description": random.choice(
+                [
+                    "Scorching desert heat",
+                    "Nile River floods",
+                    "Khamaseen wind storms",
+                    "Clear skies",
+                ]
+            ),
             "additional_effects": [],
             "measurement_system": "metric",
-            "data_reliability": "historical approximation"
+            "data_reliability": "historical approximation",
         }
 
         # Ancient civilizations weather patterns
         if time_period.startswith("ancient_"):
             if time_period == "ancient_egypt":
-                weather_data.update({
-                    "temperature": random.uniform(25, 45),
-                    "humidity": random.uniform(10, 30),
-                    "weather_description": random.choice([
-                        "Scorching desert heat",
-                        "Nile River floods",
-                        "Khamaseen wind storms",
-                        "Clear skies"
-                    ])
-                })
+                weather_data.update(
+                    {
+                        "temperature": random.uniform(25, 45),
+                        "humidity": random.uniform(10, 30),
+                        "weather_description": random.choice(
+                            [
+                                "Scorching desert heat",
+                                "Nile River floods",
+                                "Khamaseen wind storms",
+                                "Clear skies",
+                            ]
+                        ),
+                    }
+                )
             elif time_period == "ancient_rome":
-                weather_data.update({
-                    "temperature": random.uniform(10, 35),
-                    "humidity": random.uniform(40, 70),
-                    "weather_description": random.choice([
-                        "Mediterranean sunshine",
-                        "Spring rains",
-                        "Mild winter frost",
-                        "Summer heat"
-                    ])
-                })
+                weather_data.update(
+                    {
+                        "temperature": random.uniform(10, 35),
+                        "humidity": random.uniform(40, 70),
+                        "weather_description": random.choice(
+                            [
+                                "Mediterranean sunshine",
+                                "Spring rains",
+                                "Mild winter frost",
+                                "Summer heat",
+                            ]
+                        ),
+                    }
+                )
 
         # Future scenarios
         elif time_period.startswith("near_future"):
-            weather_data.update({
-                "temperature": random.uniform(15, 40),
-                "humidity": random.uniform(30, 80),
-                "weather_description": random.choice([
-                    "Regulated climate dome conditions",
-                    "Engineered weather patterns",
-                    "Carbon capture cooling effect",
-                    "Weather control system active"
-                ]),
-                "additional_effects": ["Solar radiation warnings", "Air quality monitoring"]
-            })
+            weather_data.update(
+                {
+                    "temperature": random.uniform(15, 40),
+                    "humidity": random.uniform(30, 80),
+                    "weather_description": random.choice(
+                        [
+                            "Regulated climate dome conditions",
+                            "Engineered weather patterns",
+                            "Carbon capture cooling effect",
+                            "Weather control system active",
+                        ]
+                    ),
+                    "additional_effects": [
+                        "Solar radiation warnings",
+                        "Air quality monitoring",
+                    ],
+                }
+            )
 
         # Mars colonies
         elif "mars" in time_period:
-            weather_data.update({
-                "temperature": random.uniform(-80, 20),
-                "pressure": random.uniform(600, 750),  # Assuming partial terraforming
-                "weather_description": random.choice([
-                    "Dust storm approaching",
-                    "Clear Martian skies",
-                    "Terraformed atmosphere conditions",
-                    "Polar ice cap variations"
-                ]),
-                "additional_effects": ["Radiation levels", "Dust particle density"]
-            })
+            weather_data.update(
+                {
+                    "temperature": random.uniform(-80, 20),
+                    "pressure": random.uniform(
+                        600, 750
+                    ),  # Assuming partial terraforming
+                    "weather_description": random.choice(
+                        [
+                            "Dust storm approaching",
+                            "Clear Martian skies",
+                            "Terraformed atmosphere conditions",
+                            "Polar ice cap variations",
+                        ]
+                    ),
+                    "additional_effects": ["Radiation levels", "Dust particle density"],
+                }
+            )
 
         # Space stations and outposts
-        elif any(era in time_period for era in ["lunar", "asteroid", "gas_giant", "kuiper"]):
-            weather_data.update({
-                "temperature": "Regulated: " + str(random.uniform(18, 25)),
-                "pressure": "Artificial: 1 atm",
-                "weather_description": "Controlled environment",
-                "additional_effects": ["Artificial gravity", "Radiation shielding status"]
-            })
+        elif any(
+            era in time_period for era in ["lunar", "asteroid", "gas_giant", "kuiper"]
+        ):
+            weather_data.update(
+                {
+                    "temperature": "Regulated: " + str(random.uniform(18, 25)),
+                    "pressure": "Artificial: 1 atm",
+                    "weather_description": "Controlled environment",
+                    "additional_effects": [
+                        "Artificial gravity",
+                        "Radiation shielding status",
+                    ],
+                }
+            )
 
         # Far future and alternative paths
-        elif any(era in time_period for era in ["quantum", "digital", "bio_synthetic", "parallel"]):
-            weather_data.update({
-                "weather_description": "Non-standard environmental conditions",
-                "additional_effects": ["Quantum fluctuations", "Reality distortions"],
-                "measurement_system": "advanced metrics"
-            })
+        elif any(
+            era in time_period
+            for era in ["quantum", "digital", "bio_synthetic", "parallel"]
+        ):
+            weather_data.update(
+                {
+                    "weather_description": "Non-standard environmental conditions",
+                    "additional_effects": [
+                        "Quantum fluctuations",
+                        "Reality distortions",
+                    ],
+                    "measurement_system": "advanced metrics",
+                }
+            )
 
         # Add location-specific modifications
         if location:
             weather_data["location_details"] = {
                 "name": location,
                 "local_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "coordinates": f"Sample coordinates for {location}"
+                "coordinates": f"Sample coordinates for {location}",
             }
 
         return weather_data
 
     def get(self, request):
-        time_period = request.GET.get('time_period')
-        location = request.GET.get('location')
+        time_period = request.GET.get("time_period")
+        location = request.GET.get("location")
 
         # Validate time period
         valid_periods = [choice[0] for choice in self.TIME_PERIOD_CHOICES]
         if not time_period or time_period not in valid_periods:
             return JsonResponse(
-                {"error": "Invalid or missing time period",
-                 "valid_periods": valid_periods},
-                status=400
+                {
+                    "error": "Invalid or missing time period",
+                    "valid_periods": valid_periods,
+                },
+                status=400,
             )
 
         # Validate location
         if not location:
-            return JsonResponse(
-                {"error": "Location is required"},
-                status=400
-            )
+            return JsonResponse({"error": "Location is required"}, status=400)
 
         # Generate weather data
         weather_data = self.get_weather_conditions(time_period, location)
 
-        return JsonResponse({
-            "time_period": time_period,
-            "location": location,
-            "weather_data": weather_data,
-            "generated_at": datetime.now().isoformat()
-        })
+        return JsonResponse(
+            {
+                "time_period": time_period,
+                "location": location,
+                "weather_data": weather_data,
+                "generated_at": datetime.now().isoformat(),
+            }
+        )

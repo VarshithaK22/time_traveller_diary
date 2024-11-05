@@ -6,14 +6,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('diary', '0002_alter_diaryentry_options_and_more'),
+        ("diary", "0002_alter_diaryentry_options_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='diaryentry',
-            name='mood',
-            field=models.CharField(choices=[('happy', 'Happy 😊'), ('excited', 'Excited 🎉'), ('scared', 'Scared 😨'), ('neutral', 'Neutral 😐'), ('anxious', 'Anxious 😰'), ('amazed', 'Amazed 🤩')], default='happy', max_length=20),
+            model_name="diaryentry",
+            name="mood",
+            field=models.CharField(
+                choices=[
+                    ("happy", "Happy 😊"),
+                    ("excited", "Excited 🎉"),
+                    ("scared", "Scared 😨"),
+                    ("neutral", "Neutral 😐"),
+                    ("anxious", "Anxious 😰"),
+                    ("amazed", "Amazed 🤩"),
+                ],
+                default="happy",
+                max_length=20,
+            ),
             preserve_default=False,
         ),
     ]
