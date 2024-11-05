@@ -3,7 +3,7 @@ import django
 # Set up Django environment
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'diary_project.settings')
 django.setup()
-from diary.models import UserAchievement, Achievement
+from diary.models import Achievement
 # Initial achievements data
 def create_initial_achievements():
     """Create the initial set of achievements"""
