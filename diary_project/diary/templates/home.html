@@ -108,12 +108,17 @@
                                 <i class="fas fa-calendar-alt me-1"></i>
                                 {{ entry.date_of_journey|date:"M d, Y" }}
                             </small>
-                            <div class="btn-group">
-                                {% with "Check out this adventure story: "|add:entry.title|add:" - "|add:entry.content|truncatechars:200 as share_text %}
-                                    {% post_to_twitter share_text entry "<i class='fa-brands fa-x-twitter'></i>" "btn btn-sm btn-outline-dark" %}
-                                    {% post_to_reddit share_text entry "<i class='fab fa-reddit'></i>" "btn btn-sm btn-outline-danger" %}
-                                    {% post_to_telegram share_text entry "<i class='fab fa-telegram'></i>" "btn btn-sm btn-outline-info" %}
-                                {% endwith %}
+                            <div class="dropdown position-relative" style="z-index: 2;">
+                                <button class="btn btn-link text-muted p-0" type="button" id="share_dropdownMenu{{ entry.pk }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-share-nodes"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="share_dropdownMenu{{ entry.pk }}">
+                                    {% with "Check out this adventure story: "|add:entry.title|add:" - "|add:entry.content|truncatechars:200 as share_text %}
+                                    <li>{% post_to_twitter share_text entry "<i class='fa-brands fa-x-twitter'></i> Share on X" "btn btn-sm btn-outline-dark" %}</li>
+                                    <li>{% post_to_reddit share_text entry "<i class='fab fa-reddit'></i> Share on Reddit" "btn btn-sm btn-outline-danger" %}</li>
+                                    <li>{% post_to_telegram share_text entry "<i class='fab fa-telegram'></i> Share on Telegram" "btn btn-sm btn-outline-info" %}</li>
+                                    {% endwith %}
+                                </ul>
                             </div>
                         </div>
                     </div>
