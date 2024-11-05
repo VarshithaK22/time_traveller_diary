@@ -151,4 +151,40 @@
             });
     });
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the input fields
+        const locationField = document.getElementById("location");
+        const timePeriodField = document.getElementById("time_period");
+        const weatherInfoField = document.getElementById("id_weather_info");  
+        // Add event listeners to detect changes in the fields
+        locationField.addEventListener("blur", fetchWeatherInfo);
+        timePeriodField.addEventListener("blur", fetchWeatherInfo);
+        const fetchWeatherInfoUrl = "{% url 'random_weather' %}";
+        function fetchWeatherInfo() {
+            const location = locationField.value;
+            const timePeriod = timePeriodField.value;
+    
+            if (location && timePeriod) {
+                // Make an AJAX request to your Django view
+                fetch(`${fetchWeatherInfoUrl}?location=${encodeURIComponent(location)}&time_period=${encodeURIComponent(timePeriod)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle the weather data
+                        console.log(data);
+                        weatherInfoField.value = 'Temperature: ' + data.weather_data.temperature + ' C, Outlook: ' + data.weather_data.weather_description;
+                        // You can update the form with the weather data here
+                    })
+                    .catch(error => {
+                        console.error('Error fetching weather information:', error);
+                    });
+            }
+            else{
+                weatherInfoField.value = "";
+            }
+        }
+    });
+    </script>
+    
 {% endblock %}

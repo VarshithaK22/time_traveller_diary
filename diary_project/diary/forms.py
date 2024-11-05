@@ -13,6 +13,14 @@ class UserRegistrationForm(UserCreationForm):
         fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
 
 class DiaryEntryForm(forms.ModelForm):
+    weather_info = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'readonly': 'readonly',  # Make the field read-only
+            'placeholder': 'Enter Time period and location to display the weather information'
+        })
+    )
     class Meta:
         model = DiaryEntry
         fields = ['title', 'content', 'date_of_journey', 'location', "mood", "time_period", "destination_date", "image"]
@@ -26,6 +34,14 @@ class DiaryEntryForm(forms.ModelForm):
                 'type': 'date',  
                 'class': 'form-control',  
                 'placeholder': 'YYYY-MM-DD',  
+            }),
+            'location': forms.TextInput(attrs={
+                'class': 'form-control',
+                'id': 'location',  
+            }),
+            'time_period': forms.Select(attrs={
+                'class': 'form-control',
+                'id': 'time_period',  
             }),
         }
 

@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views, entry_views
+from . import views, entry_views, weather_view
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -17,4 +17,5 @@ urlpatterns = [
     path('<int:pk>/update', entry_views.EntryUpdateView.as_view(), name='entry_update'),
     path('<int:pk>/delete', entry_views.EntryDeleteView.as_view(), name='entry_delete'),
     path('random-adventure/', entry_views.RandomeAdventureView.as_view(), name='random_adventure'),
+    path('fake-weather/', weather_view.RandomeWeatherView.as_view(), name='random_weather'),
 ] 
