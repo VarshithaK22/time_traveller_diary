@@ -139,6 +139,7 @@ class EntryListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        queryset = queryset.filter(user=self.request.user)
         query = self.request.GET.get("query")
         if query:
             queryset = queryset.filter(
