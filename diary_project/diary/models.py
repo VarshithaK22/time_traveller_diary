@@ -5,8 +5,30 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from django.utils.text import slugify
 from django.conf import settings
+import uuid
+from datetime import datetime
+import os
+def get_valid_name( name):
+    """Returns a filename that's cleaned and unique."""
+    name = clean_filename(name)
+    name_without_extension, extension = os.path.splitext(name)
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    unique_id = str(uuid.uuid4())[:8]
+    final_name = f"{name_without_extension}_{timestamp}_{unique_id}{extension}"
+    return final_name
 
+def clean_filename( name):
+    """Cleans the filename by removing special characters and spaces."""
+    name_without_extension, extension = os.path.splitext(name)
+    cleaned_name = slugify(name_without_extension)
+    return f"{cleaned_name}{extension.lower()}"
+
+def user_directory_path(instance, filename):
+    file_name = get_valid_name(filename)
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    return "user_{0}/{1}".format(instance.user.id, file_name)
 
 class DiaryEntry(models.Model):
     MOOD_CHOICES = [
@@ -77,7 +99,7 @@ class DiaryEntry(models.Model):
         null=True, help_text="Specific year within the time period (optional)"
     )
 
-    image = models.ImageField(upload_to="adventure_images/", blank=True, null=True)
+    image = models.ImageField(upload_to=user_directory_path, blank=True, null=True)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
